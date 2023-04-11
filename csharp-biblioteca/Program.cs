@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Reflection.Metadata.Ecma335;
 
 internal class Program
 {
@@ -47,11 +47,6 @@ internal class Program
         List<Loan> Loans = new List<Loan>();
         List<Book> Books = new List<Book>();
         List<DVD> Dvds = new List<DVD>();
-
-
-        
-
-        
 
         public Library(List<User> users, List <Loan> loans, List<Book> books, List<DVD> dvds)
         {
@@ -104,6 +99,7 @@ internal class Program
                 Loan newLoan = new Loan(userLoan, this.Books[bookNum], startDate, endDate);
                 this.Loans.Add(newLoan);
                 Console.WriteLine($"Complimenti. Il tuo prestito scadrà il {endDate}");
+                ViewLoan();
             }
             else
             {
@@ -124,9 +120,26 @@ internal class Program
                 Loan newLoan = new Loan(userLoan, this.Dvds[dvdNum], startDate, endDate);
                 this.Loans.Add(newLoan);
                 Console.WriteLine($"Complimenti. Il tuo prestito scadrà il {endDate}");
+                ViewLoan();
             }
+
             
             
+        }
+        public void ViewLoan()
+        {
+            foreach(Loan loan in Loans)
+            {
+                Console.Write($" - Prestito n. {Loans.IndexOf(loan)} - Utente: {loan.User.Name} {loan.User.LastName} - Documento: {loan.Document.Title} - Data prestito: {loan.StartDate} - Data restituzione: {loan.EndDate}");
+
+                Console.WriteLine("Se vuoi chiedere un altro prestito, digita 1");
+                
+
+            }
+            int newLoan;
+            while (!int.TryParse(Console.ReadLine(), out newLoan)) { Console.WriteLine("digita un vero numero"); }
+            while (newLoan != 1) { Console.WriteLine("il numero scelto non è valido"); }
+            if(newLoan == 1) { RequestLoan(); }
         }
         
 
